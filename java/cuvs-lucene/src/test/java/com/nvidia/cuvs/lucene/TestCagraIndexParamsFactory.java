@@ -193,9 +193,12 @@ public class TestCagraIndexParamsFactory extends LuceneTestCase {
     // SAME_GRAPH_FOOTPRINT yields graph_degree = 2 * maxConn; cuVS owns the exact derivation, so we
     // assert the footprint relationship it documents rather than a hardcoded value.
     assertEquals(2L * params.getMaxConn(), cagraParams.getGraphDegree());
-    // The variable-degree fraction chosen by the heuristic must survive the native round trip and
-    // the rebuild of the params (SAME_GRAPH_FOOTPRINT enables variable-degree graphs).
-    assertTrue(cagraParams.getVariableGraphDegreeFraction() < 1.0);
+    assertEquals(3L * params.getMaxConn(), cagraParams.getIntermediateGraphDegree());
+    assertEquals(
+        "Lucene HNSW uses fixed-degree graphs",
+        1.0,
+        cagraParams.getVariableGraphDegreeFraction(),
+        0.0);
     // The caller-configured writerThreads must be honored on the HEURISTIC path.
     assertEquals(7, cagraParams.getNumWriterThreads());
   }

@@ -88,9 +88,11 @@ public class CagraIndexParamsFactory {
       // TODO: fromHnswParams has no writerThreads argument, so its result carries the cuVS default
       // (not a heuristic value). We can rebuild the CagraIndexParams with the caller-supplied
       // writerThreads for now but should fix this in cuVS in the future.
+
+      // Use the fixed-degree graph setting previously used by Lucene's CPU HNSW search.
       return new CagraIndexParams.Builder()
           .withGraphDegree(derived.getGraphDegree())
-          .withVariableGraphDegreeFraction(derived.getVariableGraphDegreeFraction())
+          .withVariableGraphDegreeFraction(1.0)
           .withIntermediateGraphDegree(derived.getIntermediateGraphDegree())
           .withCagraGraphBuildAlgo(derived.getCagraGraphBuildAlgo())
           .withCuVSIvfPqParams(derived.getCuVSIvfPqParams())
